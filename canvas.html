@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and drop</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="400" height="400" style="border: 1px solid black;">Canvas is not supported on this browser</canvas>
+
+
+    <script>
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+        let centerX = 0;
+        let centerY = 0;
+        let r = 25;
+        circle(r, centerX, centerY);
+        draw();
+        
+        
+        function draw(){
+            ctx.fillStyle = 'azure';
+            ctx.fillRect(0,0,canvas.width, canvas.height);
+            centerX += 1;
+            centerY += 1;
+            circle(r, centerX, centerY);
+            window.requestAnimationFrame(draw);
+        }
+
+        function circle(r, centerX, centerY) {
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, r, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'gray';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+        }
+    </script>
+</body>
+
+</html>

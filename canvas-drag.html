@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and drop</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="400" height="400" style="border: 1px solid black;">Canvas is not supported on this
+        browser</canvas>
+
+
+    <script>
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+        const rect = canvas.getBoundingClientRect();
+        circleObj = {
+            x: 200 - rect.left,
+            y: 200 - rect.top,
+            r: 25,
+        };
+        circle(circleObj.r, circleObj.x, circleObj.y);
+        window.requestAnimationFrame(draw);
+        
+        canvas.addEventListener('mousedown', function (e) {
+            if (inCircle(e.clientX, e.clientY, circleObj)) {
+                canvas.addEventListener('mousemove', moveCircle);
+                window.addEventListener('mouseup', dropCircle);
+            }
+            
+        }, false);
+        
+        function draw() {
+            ctx.fillStyle = 'azure';
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            circle(circleObj.r, circleObj.x, circleObj.y);
+            window.requestAnimationFrame(draw);
+        }
+        
+        function dropCircle(e) {
+            console.log('mouse released');
+            canvas.removeEventListener('mousemove', moveCircle);
+            canvas.removeEventListener('mouseup', dropCircle);
+            
+        }
+        function moveCircle(e) {
+            circleObj.x = e.clientX - rect.left;
+            circleObj.y = e.clientY - rect.top;
+            console.log(circleObj);
+            draw();
+        }
+
+        function inCircle(x, y, circle) {
+            return distanceFormula(x, y, circle.x, circle.y) < circle.r;
+        }
+
+        function distanceFormula(x0, y0, x1, y1) {
+            let dx = x1 - x0;
+            let dy = y1 - y0;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function circle(r, x, y) {
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'gray';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+        }
+    </script>
+</body>
+
+</html>
